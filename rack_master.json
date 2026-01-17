@@ -1,0 +1,134 @@
+{
+  "Rack A": [
+    {
+      "name": "ACTIVA 110 MADGARD JESKO WHITE",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "ACTIVA 110 MADGARD JESKO BLACK",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "DAKI STILL BIRD PVC",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "DAKI PLASTITEK PVC",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "DAKI MIDIMUM PVC",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "DAKI MOTI STEEL",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "DAKI MIDIMUM STEEL",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "DAKI NANI STEEL",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    }
+  ],
+  "RACK B": [
+    {
+      "name": "FULL HELMET MIDIMUM",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "FULL HELMET OSCAR",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "FULL HELMET ROX",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "FULL HELMET SB",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "HALF HELMET MIDIMUM",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "HALF HELMET STEELBIRD",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "HALF HELMET HERO",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "HALF HELMET TVS",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "HALF HELMET SUZUKI",
+      "min": 1,
+      "godownNeed": 0,
+      "orderSupplier": false
+    }
+  ],
+  "RACK C": [
+    {
+      "name": "FORK OIL MIDIMUM",
+      "min": 30,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "FORK OIL HEAVY",
+      "min": 17,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "FORK OIL SEAL MIDIMUM",
+      "min": 20,
+      "godownNeed": 0,
+      "orderSupplier": false
+    },
+    {
+      "name": "FORK OIL SEAL HAVY",
+      "min": 20,
+      "godownNeed": 0,
+      "orderSupplier": false
+    }
+  ]
+}

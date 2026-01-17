@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Monday Checklist — Staff View</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  background:#f2f2f2;
+  margin:0;
+  padding:15px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #ccc;
+}
+
+h2 { text-align:center; }
+
+.topBar {
+  background:#eef2ff;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:12px;
+}
+
+.summaryBox {
+  background:#e3f2fd;
+  padding:10px;
+  border-radius:8px;
+  margin:12px 0;
+}
+
+.rackBox {
+  background:#e9ecef;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:15px;
+}
+
+.itemBox {
+  border:1px solid #ddd;
+  padding:8px;
+  margin-top:8px;
+  background:white;
+}
+
+.modelBox {
+  margin-left:15px;
+  margin-top:8px;
+  border-left:3px solid #007bff;
+  padding-left:8px;
+}
+
+table {
+  width:100%;
+  border-collapse: collapse;
+  margin-top:8px;
+}
+
+th, td {
+  border:1px solid #ccc;
+  padding:6px;
+  text-align:left;
+}
+
+th {
+  background:#f0f0f0;
+}
+
+input[type="number"] {
+  width:80px;
+  padding:4px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.3);
+}
+
+.btnRow {
+  text-align:center;
+  margin:20px 0;
+}
+
+button {
+  padding:8px 14px;
+  margin:5px;
+  font-size:14px;
+  border:none;
+  border-radius:6px;
+  background:#007bff;
+  color:white;
+  cursor:pointer;
+}
+
+select {
+  padding:6px;
+  border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+<body>
+
+<!-- ===== UNIVERSAL TOP MENU ===== -->
+<div style="
+  background:#1f2937;
+  color:white;
+  padding:10px 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+">
+
+  <div style="font-weight:bold;">Rack Checklist App</div>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <a href="index.html" style="color:white; text-decoration:none;">🏠 Home</a>
+    <a href="mondayview.html" style="color:white; text-decoration:none;">Mon</a>
+    <a href="tuesday.html" style="color:white; text-decoration:none;">Tue</a>
+    <a href="wednesday.html" style="color:white; text-decoration:none;">Wed</a>
+    <a href="thursday.html" style="color:white; text-decoration:none;">Thu</a>
+    <a href="friday.html" style="color:white; text-decoration:none;">Fri</a>
+    <a href="saturday.html" style="color:white; text-decoration:none;">Sat</a>
+    <a href="sunday.html" style="color:white; text-decoration:none;">Sun</a>
+    <a href="dailychecklist.html" style="color:white; text-decoration:none;">📦 Daily</a>
+  </div>
+</div>
+
+
+
+
+<div class="container">
+
+<h2>Monday — Staff Checklist</h2>
+
+<div class="topBar">
+  <strong>Select Staff:</strong>
+  <select id="staffSelect">
+    <option value="">-- Choose Staff --</option>
+    <option value="JAY">JAY</option>
+    <option value="SAHIL">SAHIL</option>
+    <option value="AMIRSH KAKA">AMIRSH KAKA</option>
+    <option value="DEEP">DEEP</option>
+  </select>
+  
+  
+  
+</div>
+
+<div id="content">
+  <p>Loading checklist...</p>
+</div>
+
+<div class="summaryBox">
+  <h3>📦 Bring From Godown — Summary</h3>
+  <div id="godownSummaryScreen">No entries yet.</div>
+</div>
+
+<div class="summaryBox">
+  <h3>📝 Supplier Order — Summary</h3>
+  <div id="supplierSummaryScreen">No items selected.</div>
+</div>
+
+<div class="btnRow">
+  <button onclick="downloadGodownPDF()">Download Godown PDF</button>
+  <button onclick="downloadSupplierPDF()">Download Supplier PDF</button>
+</div>
+
+</div>
+
+<script>
+let globalData = null;
+
+fetch("monday.json")
+.then(res => res.json())
+.then(data => {
+  globalData = data;
+  renderChecklist(data);
+})
+.catch(err => {
+  document.getElementById("content").innerHTML =
+    "<b style='color:red'>Error loading monday.json. Run localhost.</b>";
+  console.error(err);
+});
+
+function renderChecklist(data){
+
+  let html = "";
+
+  for (let rack in data){
+
+    html += `<div class="rackBox">
+      <h3>Rack: ${rack}</h3>`;
+
+    data[rack].forEach(item => {
+
+      html += `<div class="itemBox">
+        <b>Item:</b> ${item.item} &nbsp; | &nbsp; 
+        <b>Min:</b> ${item.min}`;
+
+      if (item.models){
+
+        for (let model in item.models){
+
+          html += `<div class="modelBox">
+            <b>Model:</b> ${model}
+
+            <table>
+              <tr>
+                <th>Variant</th>
+                <th>Min</th>
+                <th>Bring from Godown</th>
+                <th>Order from Supplier</th>
+              </tr>`;
+
+          item.models[model].forEach(variant => {
+
+            const id = `${rack}_${item.item}_${model}_${variant}`
+              .replace(/[^a-zA-Z0-9]/g,'_');
+
+            html += `
+              <tr>
+                <td>${variant}</td>
+                <td>${item.min}</td>
+                <td>
+                  <input type="number" id="${id}_godown" 
+                    placeholder="Qty" oninput="updateSummary()">
+                </td>
+                <td style="text-align:center;">
+                  <input type="checkbox" id="${id}_order"
+                    onchange="updateSummary()">
+                </td>
+              </tr>
+            `;
+          });
+
+          html += `</table></div>`;
+        }
+
+      } else {
+
+        const id = `${rack}_${item.item}`.replace(/[^a-zA-Z0-9]/g,'_');
+
+        html += `
+          <table>
+            <tr>
+              <th>Item</th>
+              <th>Min</th>
+              <th>Bring from Godown</th>
+              <th>Order from Supplier</th>
+            </tr>
+            <tr>
+              <td>${item.item}</td>
+              <td>${item.min}</td>
+              <td>
+                <input type="number" id="${id}_godown"
+                  placeholder="Qty" oninput="updateSummary()">
+              </td>
+              <td style="text-align:center;">
+                <input type="checkbox" id="${id}_order"
+                  onchange="updateSummary()">
+              </td>
+            </tr>
+          </table>
+        `;
+      }
+
+      html += `</div>`;
+    });
+
+    html += `</div>`;
+  }
+
+  document.getElementById("content").innerHTML = html;
+}
+
+// --------- LIVE SUMMARY LOGIC ---------
+function updateSummary(){
+
+  let godownList = [];
+  let supplierList = [];
+
+  for (let rack in globalData){
+
+    globalData[rack].forEach(item => {
+
+      if (item.models){
+
+        for (let model in item.models){
+
+          item.models[model].forEach(variant => {
+
+            const id = `${rack}_${item.item}_${model}_${variant}`
+              .replace(/[^a-zA-Z0-9]/g,'_');
+
+            const qty = document.getElementById(id+"_godown").value;
+            const order = document.getElementById(id+"_order").checked;
+
+            if (qty && Number(qty) > 0){
+              godownList.push(
+                `${rack} | ${item.item} | ${model} | ${variant} → ${qty}`
+              );
+            }
+
+            if (order){
+              supplierList.push(
+                `${rack} | ${item.item} | ${model} | ${variant}`
+              );
+            }
+          });
+        }
+
+      } else {
+
+        const id = `${rack}_${item.item}`.replace(/[^a-zA-Z0-9]/g,'_');
+
+        const qty = document.getElementById(id+"_godown").value;
+        const order = document.getElementById(id+"_order").checked;
+
+        if (qty && Number(qty) > 0){
+          godownList.push(
+            `${rack} | ${item.item} → ${qty}`
+          );
+        }
+
+        if (order){
+          supplierList.push(
+            `${rack} | ${item.item}`
+          );
+        }
+      }
+    });
+  }
+
+  document.getElementById("godownSummaryScreen").innerHTML =
+    godownList.length ? godownList.join("<br>") : "No entries yet.";
+
+  document.getElementById("supplierSummaryScreen").innerHTML =
+    supplierList.length ? supplierList.join("<br>") : "No items selected.";
+}
+
+// --------- CONVERT UI TO PRINTABLE TEXT ---------
+function buildPrintableChecklist() {
+
+  const clone = document.getElementById("content").cloneNode(true);
+
+  // Replace all number inputs with their values
+  clone.querySelectorAll("input[type=number]").forEach(inp => {
+    const span = document.createElement("span");
+    span.style.fontWeight = "bold";
+    span.innerText = inp.value || "0";
+    inp.replaceWith(span);
+  });
+
+  // Replace checkboxes with ✓ or ✗
+  clone.querySelectorAll("input[type=checkbox]").forEach(chk => {
+    const span = document.createElement("span");
+    span.style.fontWeight = "bold";
+    span.innerText = chk.checked ? "✔ YES" : "✗ NO";
+    chk.replaceWith(span);
+  });
+
+  return clone.innerHTML;
+}
+
+// --------- PDF FUNCTIONS ---------
+
+function downloadGodownPDF(){
+
+  const staff = document.getElementById("staffSelect").value;
+  if (!staff) { alert("Select staff first!"); return; }
+
+  const pdfClone = document.createElement("div");
+  pdfClone.style.padding = "10px";
+
+  pdfClone.innerHTML = `
+    <h2>Monday — Bring From Godown</h2>
+    <p><strong>Staff:</strong> ${staff}</p>
+    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+    <hr>
+
+    <h3>📦 Summary</h3>
+    ${document.getElementById("godownSummaryScreen").innerHTML}
+
+    <hr>
+    <h3>📋 Data Entered</h3>
+    ${buildPrintableChecklist()}
+  `;
+
+  html2pdf().from(pdfClone).set({
+    margin: 8,
+    html2canvas:{ scale:2, scrollY:0 },
+    jsPDF:{ orientation:'portrait', unit:'mm', format:'a4' }
+  }).save("monday_godown.pdf");
+}
+
+function downloadSupplierPDF(){
+
+  const staff = document.getElementById("staffSelect").value;
+  if (!staff) { alert("Select staff first!"); return; }
+
+  const pdfClone = document.createElement("div");
+  pdfClone.style.padding = "10px";
+
+  pdfClone.innerHTML = `
+    <h2>Monday — Supplier Order</h2>
+    <p><strong>Staff:</strong> ${staff}</p>
+    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+    <hr>
+
+    <h3>📝 Summary</h3>
+    ${document.getElementById("supplierSummaryScreen").innerHTML}
+
+    <hr>
+    <h3>📋 Data Entered</h3>
+    ${buildPrintableChecklist()}
+  `;
+
+  html2pdf().from(pdfClone).set({
+    margin: 8,
+    html2canvas:{ scale:2, scrollY:0 },
+    jsPDF:{ orientation:'portrait', unit:'mm', format:'a4' }
+  }).save("monday_supplier_order.pdf");
+}
+</script>
+
+</body>
+</html>

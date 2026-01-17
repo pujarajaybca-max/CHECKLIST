@@ -1,0 +1,83 @@
+{
+  "Rack A": [
+    {
+      "item": "ACTIVA 110 MADGARD",
+      "min": 1,
+      "models": {
+        "JESKO": [
+          "WHITE",
+          "BLACK"
+        ]
+      }
+    },
+    {
+      "item": "DAKI",
+      "min": 1,
+      "models": {
+        "PVC": [
+          "STILL BIRD",
+          "PLASTIK",
+          "MIDIMUM"
+        ],
+        "STEEL": [
+          "MOTI",
+          "MIDIMUM",
+          "NANI"
+        ]
+      }
+    }
+  ],
+  "RACK B": [
+    {
+      "item": "HELMET",
+      "min": 1,
+      "models": {
+        "FULL": [
+          "MIDIMUM",
+          "OSCAR",
+          "ROX",
+          "STILL BIRD"
+        ],
+        "HALF": [
+          "MIDIMUM",
+          "STILL BIRD",
+          "HERO",
+          "TVS",
+          "SUZUKI"
+        ]
+      }
+    }
+  ],
+  "RACK C": [
+    {
+      "item": "FORK OIL",
+      "min": 30
+    },
+    {
+      "item": "FORK OIL SEAL",
+      "min": 20
+    },
+    {
+      "item": "PLUG",
+      "min": 30,
+      "models": {
+        "SPLENDER NANA": [
+          "BOSCH",
+          "CHINA",
+          "NGK",
+          "SPARK INDIA"
+        ],
+        "PUL MOTA": [
+          "BOSCH",
+          "CHINA",
+          "NGK",
+          "SPARK INDIA"
+        ],
+        "CHETAK": [
+          "BOSCH",
+          "CHINA"
+        ]
+      }
+    }
+  ]
+}

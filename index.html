@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Rack Checklist — Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial;
+  background:#f2f2f2;
+  margin:0;
+  padding:20px;
+}
+
+.container {
+  max-width: 800px;
+  margin:auto;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 0 8px #ccc;
+  text-align:center;
+}
+
+h2 {
+  margin-top:0;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap:12px;
+  margin-top:20px;
+}
+
+a {
+  text-decoration:none;
+}
+
+.card {
+  background:#eef2ff;
+  padding:15px;
+  border-radius:8px;
+  font-size:16px;
+  font-weight:bold;
+  color:#000;
+  border:1px solid #ddd;
+  transition:0.2s;
+}
+
+.card:hover {
+  background:#007bff;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Rack Checklist — Dashboard</h2>
+  <p>Select a checklist to open:</p>
+
+  <div class="grid">
+
+    <a href="mondayview.html">
+      <div class="card">📅 Monday Checklist</div>
+    </a>
+
+    <a href="tuesday.html">
+      <div class="card">📅 Tuesday Checklist</div>
+    </a>
+
+    <a href="wednesday.html">
+      <div class="card">📅 Wednesday Checklist</div>
+    </a>
+
+    <a href="thursday.html">
+      <div class="card">📅 Thursday Checklist</div>
+    </a>
+
+    <a href="friday.html">
+      <div class="card">📅 Friday Checklist</div>
+    </a>
+
+    <a href="saturday.html">
+      <div class="card">📅 Saturday Checklist</div>
+    </a>
+
+    <a href="sunday.html">
+      <div class="card">📅 Sunday Checklist</div>
+    </a>
+
+    <a href="daily.html">
+      <div class="card">📦 Daily Checklist</div>
+    </a>
+	
+
+  </div>
+</div>
+
+</body>
+</html>

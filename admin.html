@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin — Create Checklist JSON</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  background:#f2f2f2;
+  margin:0;
+  padding:15px;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #ccc;
+}
+
+h2 { text-align:center; }
+
+.box {
+  background:#e9ecef;
+  padding:10px;
+  border-radius:8px;
+  margin-bottom:15px;
+}
+
+.row {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+button {
+  padding:8px 12px;
+  font-size:14px;
+  border:none;
+  border-radius:6px;
+  background:#007bff;
+  color:white;
+  cursor:pointer;
+}
+
+select {
+  padding:6px;
+  font-size:14px;
+  border-radius:6px;
+}
+
+pre {
+  background:#f7f7f7;
+  padding:10px;
+  border:1px solid #ddd;
+  max-height:350px;
+  overflow:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Admin — Create Checklist JSON</h2>
+
+<div class="box">
+  <strong>Step 1: Choose Checklist Type</strong><br><br>
+
+  <select id="modeSelect" onchange="toggleDaySelect()">
+    <option value="daily">Daily Common Checklist</option>
+    <option value="daywise">Day-wise Checklist</option>
+  </select>
+
+  &nbsp;&nbsp;&nbsp;
+
+  <select id="daySelect" style="display:none;">
+    <option value="monday.json">Monday</option>
+    <option value="tuesday.json">Tuesday</option>
+    <option value="wednesday.json">Wednesday</option>
+    <option value="thursday.json">Thursday</option>
+    <option value="friday.json">Friday</option>
+    <option value="saturday.json">Saturday</option>
+    <option value="sunday.json">Sunday</option>
+  </select>
+</div>
+
+<div class="box">
+  <strong>Step 2:</strong> Upload Excel  
+  <small>(columns must be: Rack, Item, Model, Variant, Min)</small><br><br>
+  <input type="file" accept=".xlsx" onchange="importExcel(this)">
+</div>
+
+<div class="box">
+  <strong>Step 3:</strong> Download JSON<br><br>
+  <button onclick="downloadJSON()">Download Checklist JSON</button>
+</div>
+
+<h3>Preview of generated JSON</h3>
+<pre id="jsonPreview">{}</pre>
+
+</div>
+
+<script>
+let data = {};
+
+function toggleDaySelect() {
+  const mode = document.getElementById("modeSelect").value;
+  const dayBox = document.getElementById("daySelect");
+
+  if (mode === "daywise") {
+    dayBox.style.display = "inline-block";
+  } else {
+    dayBox.style.display = "none";
+  }
+}
+
+function importExcel(input) {
+  const file = input.files[0];
+  if (!file) {
+    alert("Please select an Excel file.");
+    return;
+  }
+
+  data = {};   // reset
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+    const sheet = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet);
+
+    rows.forEach(r => {
+      const rack = r.Rack;
+      const item = r.Item;
+      const model = r.Model || "";
+      const variant = r.Variant || "";
+      const min = r.Min;
+
+      if (!rack || !item || min === undefined) {
+        console.warn("Skipping row:", r);
+        return;
+      }
+
+      if (!data[rack]) data[rack] = [];
+
+      // Find existing item inside this rack
+      let existing = data[rack].find(x => x.item === item);
+
+      if (!existing) {
+        existing = {
+          item: item,
+          min: Number(min)
+        };
+        data[rack].push(existing);
+      }
+
+      // If this item has model + variant → create grouping
+      if (model && variant) {
+        if (!existing.models) existing.models = {};
+
+        if (!existing.models[model]) {
+          existing.models[model] = [];
+        }
+
+        if (!existing.models[model].includes(variant)) {
+          existing.models[model].push(variant);
+        }
+      }
+    });
+
+    document.getElementById('jsonPreview').innerText =
+      JSON.stringify(data, null, 2);
+
+    alert("Excel processed successfully.");
+  };
+
+  reader.readAsArrayBuffer(file);
+}
+
+function downloadJSON() {
+
+  if (Object.keys(data).length === 0) {
+    alert("First upload Excel file.");
+    return;
+  }
+
+  const mode = document.getElementById("modeSelect").value;
+
+  let filename = "";
+
+  if (mode === "daily") {
+    filename = "daily.json";
+  } else {
+    filename = document.getElementById("daySelect").value;
+  }
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json"
+  });
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+
+  alert(filename + " created successfully!");
+}
+</script>
+
+</body>
+</html>

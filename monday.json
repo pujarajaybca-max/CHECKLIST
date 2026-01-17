@@ -1,0 +1,68 @@
+{
+  "Rack A": [
+    {
+      "item": "CHEN KIT",
+      "min": 10,
+      "models": {
+        "SPLENDER Y2K": [
+          "DYAMEND",
+          "OE",
+          "IEB",
+          "MIDIMUM"
+        ],
+        "PESHAN+": [
+          "DYAMEND",
+          "OE",
+          "IEB",
+          "MIDIMUM"
+        ]
+      }
+    }
+  ],
+  "RACK B": [
+    {
+      "item": "CENTER STAND",
+      "min": 3,
+      "models": {
+        "SPLENDER": [
+          "MIDIMUM",
+          "GOOD",
+          "OE"
+        ],
+        "CDDLX": [
+          "MIDIMUM",
+          "GOOD",
+          "OE"
+        ]
+      }
+    }
+  ],
+  "RACK C": [
+    {
+      "item": "CABLE",
+      "min": 20,
+      "models": {
+        "SPLENDER ACC": [
+          "HAVY",
+          "MIDIMUM",
+          "OE"
+        ],
+        "SPLENDER SM": [
+          "HAVY",
+          "MIDIMUM",
+          "OE"
+        ],
+        "SPLENDER CLUCH CABLE": [
+          "HAVY",
+          "MIDIMUM",
+          "OE"
+        ],
+        "SPLENDER BRAK CABLE": [
+          "HAVY",
+          "MIDIMUM",
+          "OE"
+        ]
+      }
+    }
+  ]
+}
